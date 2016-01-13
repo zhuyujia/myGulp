@@ -1,0 +1,17 @@
+@charset "utf-8";
+@import "config";
+@import "reset";
+@import "common";
+@import "css3";
+
+
+div{
+    width:300px;
+    height:300px;
+    @extend %center-block;
+    background:#f00;
+    transition:all .5s;
+}
+div:hover{
+	background-color:#f0f;
+}
