@@ -11,7 +11,6 @@
 │   │    ├── main.js
 │   │    └── main.min.js
 │   └── index.html
-│
 ├── src	  // 源文件
 │   ├── sass
 │   │    └── main.scss
