@@ -9,6 +9,7 @@
  * gulp-jshint: https://github.com/spalger/gulp-jshint
  * gulp-concat: https://github.com/contra/gulp-concat
  * gulp-uglify: https://github.com/terinjokes/gulp-uglify
+ * gulp-imagemin: https://github.com/sindresorhus/gulp-imagemin
  * gulp-rename: https://github.com/hparra/gulp-rename
  * gulp-clean: https://github.com/peter-vilja/gulp-clean
  */
@@ -22,6 +23,7 @@ var gulp = require('gulp'),
     jshint = require('gulp-jshint'),
     concat = require('gulp-concat'),
     uglify = require('gulp-uglify'),
+    imagemin = require('gulp-imagemin'),
     rename = require('gulp-rename'),
     clean = require('gulp-clean');
 
@@ -72,9 +74,19 @@ gulp.task('js', function(){
         .pipe(gulp.dest(jsDest));
 });
 
+// 图片处理
+gulp.task('images', function(){
+    var imagesSrc = './src/images/*',
+        imagesDest = './dist/images';
+
+    gulp.src(imagesSrc)
+        .pipe(imagemin())
+        .pipe(gulp.dest(imagesDest));
+});
+
 // 清除任务
 gulp.task('clean', function(){
-    gulp.src(['./dist/*.html', './dist/css', './dist/js'], {read: false})
+    gulp.src(['./dist/*.html', './dist/css', './dist/js', './dist/images'], {read: false})
         .pipe(clean());
 });
 
@@ -82,7 +94,8 @@ gulp.task('clean', function(){
 gulp.task('watch', function(){
     var htmlSrc = './src/*.html',
         cssSrc = './src/sass/*.scss',
-        jsSrc = './src/js/*.js';
+        jsSrc = './src/js/*.js',
+        imagesSrc = './src/images/*';
 
     gulp.watch(htmlSrc, function(){
         gulp.run('html');
@@ -95,9 +108,13 @@ gulp.task('watch', function(){
     gulp.watch(jsSrc, function(){
         gulp.run('js');
     });
+
+    gulp.watch(imagesSrc, function(){
+        gulp.run('images');
+    });
 });
 
 // 默认任务
 gulp.task('default', ['watch'], function(){
-    gulp.start('html', 'css', 'js');
+    gulp.start('html', 'css', 'js', 'images');
 });
