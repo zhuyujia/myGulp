@@ -9,7 +9,6 @@
  * gulp-jshint: https://github.com/spalger/gulp-jshint
  * gulp-concat: https://github.com/contra/gulp-concat
  * gulp-uglify: https://github.com/terinjokes/gulp-uglify
- * gulp-imagemin: https://github.com/sindresorhus/gulp-imagemin
  * gulp-rename: https://github.com/hparra/gulp-rename
  * gulp-clean: https://github.com/peter-vilja/gulp-clean
  */
@@ -23,7 +22,6 @@ var gulp = require('gulp'),
     jshint = require('gulp-jshint'),
     concat = require('gulp-concat'),
     uglify = require('gulp-uglify'),
-    imagemin = require('gulp-imagemin'),
     rename = require('gulp-rename'),
     clean = require('gulp-clean');
 
@@ -80,7 +78,6 @@ gulp.task('images', function(){
         imagesDest = './dist/images';
 
     gulp.src(imagesSrc)
-        .pipe(imagemin())
         .pipe(gulp.dest(imagesDest));
 });
 
@@ -94,8 +91,7 @@ gulp.task('clean', function(){
 gulp.task('watch', function(){
     var htmlSrc = './src/*.html',
         cssSrc = './src/sass/*.scss',
-        jsSrc = './src/js/*.js',
-        imagesSrc = './src/images/*';
+        jsSrc = './src/js/*.js';
 
     gulp.watch(htmlSrc, function(){
         gulp.run('html');
@@ -107,10 +103,6 @@ gulp.task('watch', function(){
 
     gulp.watch(jsSrc, function(){
         gulp.run('js');
-    });
-
-    gulp.watch(imagesSrc, function(){
-        gulp.run('images');
     });
 });
 
