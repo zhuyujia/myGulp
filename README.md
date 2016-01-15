@@ -31,7 +31,6 @@
 - [gulp-jshint](https://github.com/spalger/gulp-jshint)
 - [gulp-concat](https://github.com/contra/gulp-concat)
 - [gulp-uglify](https://github.com/terinjokes/gulp-uglify)
-- [gulp-imagemin](https://github.com/sindresorhus/gulp-imagemin)
 - [gulp-rename](https://github.com/hparra/gulp-rename)
 - [gulp-clean](https://github.com/peter-vilja/gulp-clean)
 
