@@ -50,7 +50,7 @@ gulp.task('css', function(){
         cssDest = './dist/css';
 
     gulp.src(cssSrc)
-        .pipe(sass({style: 'expanded'}))
+        .pipe(sass({outputStyle: 'expanded'}))
         .pipe(gulp.dest(cssDest))
         .pipe(rename({suffix: '.min'}))
         .pipe(minifyCss())
