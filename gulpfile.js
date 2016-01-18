@@ -5,6 +5,7 @@
  * 
  * gulp-htmlmin: https://github.com/jonschlinkert/gulp-htmlmin
  * gulp-sass: https://github.com/dlmanning/gulp-sass
+ * gulp-autoprefixer: https://github.com/sindresorhus/gulp-autoprefixer
  * gulp-minify-css: https://github.com/murphydanger/gulp-minify-css
  * gulp-jshint: https://github.com/spalger/gulp-jshint
  * gulp-concat: https://github.com/contra/gulp-concat
@@ -18,6 +19,7 @@
 var gulp = require('gulp'),
     htmlmin = require('gulp-htmlmin'),
     sass = require('gulp-sass'),
+    autoprefixer = require('gulp-autoprefixer'),
     minifyCss = require('gulp-minify-css'),
     jshint = require('gulp-jshint'),
     concat = require('gulp-concat'),
@@ -46,11 +48,12 @@ gulp.task('html', function(){
 
 // css 处理
 gulp.task('css', function(){
-    var cssSrc = './src/sass/main.scss',
+    var cssSrc = './src/sass/*.scss',
         cssDest = './dist/css';
 
     gulp.src(cssSrc)
         .pipe(sass({outputStyle: 'expanded'}))
+        .pipe(autoprefixer())
         .pipe(gulp.dest(cssDest))
         .pipe(rename({suffix: '.min'}))
         .pipe(minifyCss())
