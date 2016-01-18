@@ -5,7 +5,6 @@
  * 
  * gulp-htmlmin: https://github.com/jonschlinkert/gulp-htmlmin
  * gulp-sass: https://github.com/dlmanning/gulp-sass
- * gulp-autoprefixer: https://github.com/sindresorhus/gulp-autoprefixer
  * gulp-minify-css: https://github.com/murphydanger/gulp-minify-css
  * gulp-jshint: https://github.com/spalger/gulp-jshint
  * gulp-concat: https://github.com/contra/gulp-concat
@@ -53,7 +52,6 @@ gulp.task('css', function(){
 
     gulp.src(cssSrc)
         .pipe(sass({outputStyle: 'expanded'}))
-        .pipe(autoprefixer())
         .pipe(gulp.dest(cssDest))
         .pipe(rename({suffix: '.min'}))
         .pipe(minifyCss())
