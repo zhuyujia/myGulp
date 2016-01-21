@@ -18,7 +18,6 @@
 var gulp = require('gulp'),
     htmlmin = require('gulp-htmlmin'),
     sass = require('gulp-sass'),
-    autoprefixer = require('gulp-autoprefixer'),
     minifyCss = require('gulp-minify-css'),
     jshint = require('gulp-jshint'),
     concat = require('gulp-concat'),
