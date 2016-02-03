@@ -69,13 +69,6 @@
 
 删除多余的文件及文件夹。
 
-- [gulp-htmlmin](https://github.com/jonschlinkert/gulp-htmlmin)
-- [gulp-sass](https://github.com/dlmanning/gulp-sass)
-- [gulp-jshint](https://github.com/spalger/gulp-jshint)
-- [gulp-concat](https://github.com/contra/gulp-concat)
-- [gulp-uglify](https://github.com/terinjokes/gulp-uglify)
-- [gulp-clean](https://github.com/peter-vilja/gulp-clean)
-
 ## 使用方法 ##
 
 ### 开发环境 ###
