@@ -1,5 +1,1 @@
-'use strict';
-function a(){
-	window.alert('a');
-}
-a();
+window.console.log('a');

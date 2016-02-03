@@ -1,16 +1,8 @@
 /**
  * gulp 配置文件
  * 
- * npm install --save-dev gulp gulp-htmlmin gulp-sass gulp-minify-css gulp-jshint gulp-concat gulp-uglify gulp-rename gulp-clean
+ * npm install --save-dev gulp gulp-htmlmin gulp-sass gulp-jshint gulp-concat gulp-uglify gulp-clean
  * 
- * gulp-htmlmin: https://github.com/jonschlinkert/gulp-htmlmin
- * gulp-sass: https://github.com/dlmanning/gulp-sass
- * gulp-minify-css: https://github.com/murphydanger/gulp-minify-css
- * gulp-jshint: https://github.com/spalger/gulp-jshint
- * gulp-concat: https://github.com/contra/gulp-concat
- * gulp-uglify: https://github.com/terinjokes/gulp-uglify
- * gulp-rename: https://github.com/hparra/gulp-rename
- * gulp-clean: https://github.com/peter-vilja/gulp-clean
  */
 
 'use strict';
@@ -18,17 +10,23 @@
 var gulp = require('gulp'),
     htmlmin = require('gulp-htmlmin'),
     sass = require('gulp-sass'),
-    minifyCss = require('gulp-minify-css'),
     jshint = require('gulp-jshint'),
     concat = require('gulp-concat'),
     uglify = require('gulp-uglify'),
-    rename = require('gulp-rename'),
     clean = require('gulp-clean');
 
 // html 处理
-gulp.task('html', function(){
+gulp.task('html_dev', function(){
     var htmlSrc = './src/*.html',
-        htmlDest = './dist/',
+        htmlDest = './dev/';
+
+    gulp.src(htmlSrc)
+        .pipe(gulp.dest(htmlDest));
+});
+
+gulp.task('html_publish', function(){
+    var htmlSrc = './src/*.html',
+        htmlDest = './publish/',
         opts = {
             removeComments: true,//清除HTML注释
             collapseWhitespace: true,//压缩HTML
@@ -45,68 +43,112 @@ gulp.task('html', function(){
 });
 
 // css 处理
-gulp.task('css', function(){
-    var cssSrc = './src/sass/*.scss',
-        cssDest = './dist/css';
+gulp.task('css_dev', function(){
+    var cssSrc = './src/sass/main.scss',
+        cssDest = './dev/css';
 
     gulp.src(cssSrc)
-        .pipe(sass({outputStyle: 'expanded'}))
-        .pipe(gulp.dest(cssDest))
-        .pipe(rename({suffix: '.min'}))
-        .pipe(minifyCss())
+        .pipe(sass({outputStyle: 'expanded'}).on('error', sass.logError))
+        .pipe(gulp.dest(cssDest));
+});
+
+gulp.task('css_publish', function(){
+    var cssSrc = './src/sass/main.scss',
+        cssDest = './publish/css';
+
+    gulp.src(cssSrc)
+        .pipe(sass({outputStyle: 'compressed'}))
         .pipe(gulp.dest(cssDest));
 });
 
 // js 处理
-gulp.task('js', function(){
+gulp.task('js_dev', function(){
     var jsSrc = './src/js/*.js',
-        jsDest = './dist/js';
+        jsDest = './dev/js';
 
     gulp.src(jsSrc)
-        .pipe(jshint('.jshintrc'))
+        .pipe(jshint())
         .pipe(jshint.reporter('default'))
+        .pipe(gulp.dest(jsDest));
+});
+
+gulp.task('js_publish', function(){
+    var jsSrc = './src/js/*.js',
+        jsDest = './publish/js';
+
+    gulp.src(jsSrc)
         .pipe(concat('main.js'))
-        .pipe(gulp.dest(jsDest))
-        .pipe(rename({suffix: '.min'}))
         .pipe(uglify())
         .pipe(gulp.dest(jsDest));
 });
 
 // 图片处理
-gulp.task('images', function(){
+gulp.task('images_dev', function(){
     var imagesSrc = './src/images/*',
-        imagesDest = './dist/images';
+        imagesDest = './dev/images';
 
     gulp.src(imagesSrc)
         .pipe(gulp.dest(imagesDest));
 });
 
+gulp.task('images_publish', function(){
+    var imagesSrc = './src/images/*',
+        imagesDest = './publish/images';
+
+    gulp.src(imagesSrc)
+        .pipe(gulp.dest(imagesDest));
+});
+
+// 其他第三方任务
+gulp.task('other_dev', function(){
+    gulp.src(['./src/!(*.html|sass|images|js)/**'])
+        .pipe(gulp.dest('./dev/'));
+});
+
+gulp.task('other_publish', function(){
+    gulp.src(['./src/!(*.html|sass|images|js)/**'])
+        .pipe(gulp.dest('./publish/'));
+});
+
 // 清除任务
 gulp.task('clean', function(){
-    gulp.src(['./dist/*.html', './dist/css', './dist/js', './dist/images'], {read: false})
-        .pipe(clean());
+    gulp.start('clean_dev', 'clean_publish');
+});
+
+gulp.task('clean_dev', function(){
+    gulp.src(['./dev/**/*'], {read: false})
+        .pipe(clean({force: true}));
+});
+
+gulp.task('clean_publish', function(){
+    gulp.src(['./publish/**/*'], {read: false})
+        .pipe(clean({force: true}));
 });
 
 // 监听任务
-gulp.task('watch', function(){
-    var htmlSrc = './src/*.html',
-        cssSrc = './src/sass/*.scss',
-        jsSrc = './src/js/*.js';
+gulp.task('watch_dev', function(){
+    var htmlSrc = 'src/*.html',
+        cssSrc = 'src/sass/main.scss',
+        jsSrc = 'src/js/*.js';
 
     gulp.watch(htmlSrc, function(){
-        gulp.run('html');
+        gulp.run('html_dev');
     });
 
     gulp.watch(cssSrc, function(){
-        gulp.run('css');
+        gulp.run('css_dev');
     });
 
     gulp.watch(jsSrc, function(){
-        gulp.run('js');
+        gulp.run('js_dev');
     });
 });
 
-// 默认任务
-gulp.task('default', ['watch'], function(){
-    gulp.start('html', 'css', 'js', 'images');
+// 执行任务
+gulp.task('dev', ['clean_dev', 'watch_dev'], function(){
+    gulp.start('html_dev', 'css_dev', 'js_dev', 'images_dev', 'other_dev');
+});
+
+gulp.task('publish', ['clean_publish'], function(){
+    gulp.start('html_publish', 'css_publish', 'js_publish', 'images_publish', 'other_publish');
 });

@@ -1,17 +1,9 @@
 @charset "utf-8";
-@import "config";
-@import "reset";
-@import "common";
-@import "css3";
+@import "D:/git/zSass/base";
 
-
-div{
-    width:300px;
-    height:300px;
-    @extend %center-block;
-    background:#f00;
-    transition:all .5s;
-}
-div:hover{
-	background-color:#f0f;
+div {
+    width:100px;
+    height:100px;
+    background-color:#f00;
+    @include transform(translate(30px));
 }
